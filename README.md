@@ -17,10 +17,10 @@ LSM's Syntax is quite simple yet complex. Everything is stored (potentially) by 
 - ind | Index | {ind, {TableAddress, StoreAddress, IndexAddress} } | Will store an index in another memory address
 - nind | NewIndex | {nind, {TableAddress, IndexAddress, ValueAddress}} | Will change an index's value.
 
-## LSM Example Script
+## LSM Example Script's
 
+- Changes a Humanoid speed to 50
 ```lua
--- Changes Clients Speed to 50
 local LSM = require(script.LSM)
 LSM:Run({
 	{"rax", {0x393778c, game}}; -- Registers Game
