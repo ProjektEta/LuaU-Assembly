@@ -1,22 +1,22 @@
 local Compiler = {}
 
 function Compiler:Run(Bytecode)
-    
-    local memory = {
-        pool = {};
-        flags = {};
-        stacks = {};
-        protolist = {};
-    }
 
-    local cur_ = 1;
+	local memory = {
+		pool = {};
+		flags = {};
+		stacks = {};
+		protolist = {};
+	}
 
-    memory.protolist[1] = {"main", memory.pool}
+	local cur_ = 1;
+
+	memory.protolist[1] = {"main", memory.pool}
 
 	while cur_ <= #Bytecode do
 		task.wait()
 		local ins = Bytecode[cur_]
-		
+		print(cur_)
 		if ins == nil then
 			break;
 		end
@@ -114,14 +114,17 @@ function Compiler:Run(Bytecode)
 				end
 				-- set in prority_list
 				table.insert(memory.protolist, {
-					flag, memory.stacks[f.__func]
+					flag, memory.stacks[f]
 				})
 				-- set the position.
 				cur_ = flag
+				continue
 			end
 		elseif (ins[1] == "flag") then
-			memory.flags[ins[2]] = cur_
+			memory.flags[ins[2]] = cur_+1
+			memory.pool[ins[2]] = ins[2];
 			cur_ += ins[3]
+			continue
 		elseif (ins[1] == "ret") then
 			-- find function in stack pro list
 			local func = memory.protolist[#memory.protolist]
@@ -140,11 +143,14 @@ function Compiler:Run(Bytecode)
 
 			-- go to the predefined instruction in the process.
 			cur_ = func[2]["ret"]
+			continue
 		elseif (ins[1] == "jmp") then
-			cur_ = ins[1][2]
+			cur_ = ins[2]
+			continue
 		elseif (ins[1] == "jmpcon") then
 			if (memory.pool[ins[2]] == true) then
-				cur_ = ins[1][3]
+				cur_ = ins[3]
+				continue
 			end
 		elseif (ins[1] == "sys") then
 			if (ins[2] == "eq") then
@@ -165,11 +171,11 @@ function Compiler:Run(Bytecode)
 				memory.pool[ins[4]][memory.pool[ins[5]]] = memory.pool[ins[3]]
 			end
 		end
-		
+
 		cur_ += 1
 	end
 
-    return;
+	return;
 end
 
 return Compiler
