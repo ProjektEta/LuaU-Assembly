@@ -14,9 +14,7 @@ function Compiler:Run(Bytecode)
 	memory.protolist[1] = {"main", memory.pool}
 
 	while cur_ <= #Bytecode do
-		task.wait()
 		local ins = Bytecode[cur_]
-		print(cur_)
 		if ins == nil then
 			break;
 		end
