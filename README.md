@@ -29,25 +29,52 @@ LSM's Syntax is quite simple yet complex. Everything is stored (potentially) by 
 
 ## LSM Example Script's
 
-- Changes a Humanoid speed to 50
+- Makes a Part, and then changes the parts Color randomly.
 ```lua
-local LSM = require(script.LSM)
-LSM:Run({
-    {"def", 0x5d5a0, game};
-    {"def", 0xbd7bf, "GetService"};
-    {"sys", "ind", 0x7713d, 0x5d5a0, 0xbd7bf}; -- game.GetService(game, ServiceName);
-    {"def", 0x6a4ff, "Players"};
-    {"call", 0x7713d, {0x5d5a0, 0x6a4ff}, {0x078ed}};
-    {"def", 0x35fca, "LocalPlayer"};
-    {"sys", "ind", 0xf2412, 0x078ed, 0x35fca};
-    {"def", 0x428da, "Character"};
-    {"sys", "ind", 0x8e756, 0xf2412, 0x428da};
-    {"def", 0x466e6, "Humanoid"};
-    {"def", 0x8913a, "FindFirstChild"};
-    {"sys", "ind", 0x8c383, 0x8e756, 0x8913a};
-    {"call", 0x8c383, {0x8e756, 0x466e6}, {0xe7a78}}; -- Character.FindFirstChild(Character, PartName)
-    {"def", 0x61504, "WalkSpeed"};
-    {"def", 0xf90fe, 50};
-    {"sys", "nind", 0xf90fe, 0xe7a78, 0x61504};
+local Compiler = require(script.Compiler)
+
+Compiler:Run({
+	{"def", 0x119b2, workspace};
+	{"def", 0xa520f, "new"};
+	{"def", 0x0dccf, Instance};
+	{"sys", "ind", 0xc2c87, 0x0dccf, 0xa520f}; -- 0xc2c87 : Instance.new(Class, Parent)
+	{"def", 0x2056a, "Part"};
+	{"call", 0xc2c87, {0x2056a, 0x119b2}, {0x81c54}}; -- 0x81c54 : BasePart
+	{"def", 0x5ec04, Vector3};
+	{"sys", "ind", 0x30294, 0x5ec04, 0xa520f}; -- 0x30294 : Vector3.new(x,y,z)
+	{"def", 0xbae77, 10};
+	{"def", 0x3abe4, "Position"};
+	{"def", 0x27dad, "Size"};
+	{"def", 0x69855, "CanCollide"};
+	{"def", 0xaf4f9, "Anchored"};
+	{"def", 0xe3b58, true};
+	{"call", 0x30294, {0xbae77,0xbae77,0xbae77}, {0xdc20c}}; -- 0xdc20c : Vector3(10,10,10) 
+	{"sys", "nind", 0xdc20c, 0x81c54, 0x3abe4};
+	{"sys", "nind", 0xdc20c, 0x81c54, 0x27dad};
+	{"sys", "nind", 0xe3b58, 0x81c54, 0x69855};
+	{"sys", "nind", 0xe3b58, 0x81c54, 0xaf4f9};
+	{"def", 0xb5c5b, "random"};
+	{"def", 0x5d38b, math};
+	{"sys", "ind", 0x65182, 0x5d38b, 0xb5c5b}; -- 0x65182 : math.random(x1, x2)
+	{"def", 0x9f5b2, task};
+	{"def", 0x61701, "wait"};
+	{"sys", "ind", 0x87311, 0x9f5b2, 0x61701}; -- 0x87311 : task.wait(seconds)
+	{"def", 0xb9ae0, true};
+	{"flag", 0x44f41, 14}; --
+	{"sys", "noteq", 0xb9ae0, 0xb9ae0, 0xde867}; -- while true do
+	{"jmpcon", 0xde867, 13}; --
+	{"def", 0x52c8d, .1};
+	{"call", 0x87311, {0x52c8d}, {}}; -- task.wait(.1)
+	{"def", 0x771d4, Color3};
+	{"def", 0x9bacd, "fromRGB"};
+	{"sys", "ind", 0x7aa52, 0x771d4, 0x9bacd}; -- Color3.fromRGB(R,G,B)
+	{"def", 0x4fede, 0};
+	{"def", 0xa9372, 255};
+	{"call", 0x65182, {0x4fede, 0xa9372}, {0x33edc}}; -- 0x33edc : math.random(0, 255)
+	{"call", 0x7aa52, {0x33edc,0x33edc,0x33edc}, {0x0ff3a}}; -- Color
+	{"def", 0x327a2, "Color"};
+	{"sys", "nind", 0x0ff3a, 0x81c54, 0x327a2};
+	{"call", 0x44f41, {}, {}};
+	{"ret"};
 })
 ```
